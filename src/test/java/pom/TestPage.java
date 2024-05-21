@@ -34,23 +34,23 @@ public class TestPage {
         //Перейти на сайт «https://www.pobeda.aero/».
         driver.get("https://www.pobeda.aero/");
         assertEquals(driver.getCurrentUrl(), "https://www.pobeda.aero/");
-    }
 
-    @Test
-    public void testSuccessfullyMouseHover() {
         //Создаем экземпляр оъекта страницы
         objMouse = new MouseHoverPage(driver);
         objScroll = new ScrollPage(driver);
         objCheck = new CheckPage(driver);
         objEntry = new DataEntryPage(driver);
-
         //Проверяем текст заголовка страницы
         assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", driver.getTitle());
 
         //Проверяем логотип Победы
         objCheck.getLogo();
 
-//        //Навести мышку на пункт «Информация».
+    }
+
+    @Test
+    public void testSuccessfullyMouseHover() {
+        //Навести мышку на пункт «Информация».
         objMouse.getMouse();
         wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.xpath("//div/a[text() = 'Информация']")), "Информация"));
 
@@ -59,6 +59,43 @@ public class TestPage {
         Assert.assertTrue(objCheck.isDisplayed("Подготовка к полёту"));
         Assert.assertTrue(objCheck.isDisplayed("Полезная информация"));
         Assert.assertTrue(objCheck.isDisplayed("О компании"));
+    }
+        @Test
+        public void testSuccessfullyScroll() {
+
+            //Проскроллить страницу к блоку поиска билета
+            objScroll.getScroll();
+            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]"))));
+            //Проверка поля Откуда
+            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input"))));
+            Assert.assertTrue(objCheck.getWhereFrom());
+            //Проверка поля Куда
+            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"))));
+            Assert.assertTrue(objCheck.getWhere());
+            //Проверка поля Дата вылета туда
+            Assert.assertTrue(objCheck.getDepartureDateThere());
+            //Проверка поля Дата вылета обратно
+            Assert.assertTrue(objCheck.getReturnFlightDate());
+
+            //Ввести в поле значение "Москва"
+            objEntry.getAddCity();
+            //Нажать ENTER
+            objEntry.getPressEnter();
+            //Ввести в поле значение "Санкт-Петербург"
+            objEntry.getAddCity2();
+            //Нажать ENTER
+            objEntry.getPressEnter2();
+
+            //Проскроллить страницу к сделующему блоку
+            objScroll.getScroll2();
+
+            //Нажать кнопку Поиск
+            objEntry.clockButton();
+            //Проверка что после нажатия на кнопку "Поиск" около поля «Туда» появилась красная обводка.
+            objCheck.getStrokePanel();
+        }
+        @Test
+        public void testSuccessfullyScroll2() {
 
         //Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
         objScroll.getScroll3();
@@ -88,38 +125,6 @@ public class TestPage {
         //Проверка что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
         objCheck.getTextError();
         Assert.assertTrue(objCheck.isDisplayed("Заказ с указанными параметрами не найден"));
-
-
-        //Проскроллить страницу к блоку поиска билета
-       objScroll.getScroll();
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]"))));
-        //Проверка поля Откуда
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input"))));
-        Assert.assertTrue(objCheck.getWhereFrom());
-        //Проверка поля Куда
-        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"))));
-        Assert.assertTrue(objCheck.getWhere());
-        //Проверка поля Дата вылета туда
-        Assert.assertTrue(objCheck.getDepartureDateThere());
-        //Проверка поля Дата вылета обратно
-        Assert.assertTrue(objCheck.getReturnFlightDate());
-
-        //Ввести в поле значение "Москва"
-        objEntry.getAddCity();
-        //Нажать ENTER
-        objEntry.getPressEnter();
-        //Ввести в поле значение "Санкт-Петербург"
-       objEntry.getAddCity2();
-        //Нажать ENTER
-        objEntry.getPressEnter2();
-
-        //Проскроллить страницу к сделующему блоку
-        objScroll.getScroll2();
-
-        //Нажать кнопку Поиск
-        objEntry.clockButton();
-        //Проверка что после нажатия на кнопку "Поиск" около поля «Туда» появилась красная обводка.
-        objCheck.getStrokePanel();
     }
 
     @After
