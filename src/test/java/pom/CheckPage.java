@@ -1,53 +1,46 @@
 package pom;
 
+import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-
 import java.util.NoSuchElementException;
 
+import static com.codeborne.selenide.Selenide.$;
+
 public class CheckPage {
-    WebDriver driver;
+
     //Проверяем логотип Победы
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/header/div[2]/div/a[1]/img")
-    WebElement logo;
+  private SelenideElement logo = $(By.xpath("//*[@id=\"__next\"]/div[2]/header/div[2]/div/a[1]/img"));
+
     //Проверка поля Откуда
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input")
-    WebElement whereFrom;
+    private SelenideElement whereFrom = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input"));
+
     //Проверка поля Куда
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input")
-    WebElement where;
+    private SelenideElement where = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"));
+
     //Проверка поля Дата вылета туда
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div/div[1]/div/input")
-    WebElement departureDateThere;
+    private SelenideElement departureDateThere = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div/div[1]/div/input"));
+
     //Проверка поля Дата вылета обратно
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div/div[3]/div/input")
-    WebElement returnFlightDate;
+    private SelenideElement returnFlightDate = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div[1]/div[3]/div/input"));
+
     //Проверка что после нажатия на кнопку "Поиск" около поля «Туда» появилась красная обводка.
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[2]/div/div[1]/div")
-    WebElement strokePanel;
+    private SelenideElement strokePanel = $(By.xpath("//*[@id=\\\"__next\\\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[2]/div/div[1]/div"));
+
     //Проверка поля «Номер заказа или билета»
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[2]/div/div/input")
-    WebElement orderOrTicketNumber;
+    private SelenideElement orderOrTicketNumber = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[2]/div/div/input"));
+
     //Проверка поля «Фамилия клиента»
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[1]/div/div/input")
-    WebElement clientLastName;
+    private SelenideElement clientLastName = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[1]/div/div/input"));
+
     //Проверка наличия поля есть кнопка «Поиск»
-    @FindBy(xpath = "//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[3]/button")
-    WebElement theSearchButton;
+    private SelenideElement theSearchButton = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[3]/button"));
+
     //Проверка что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
-    @FindBy(xpath = "/html/body/div[1]/section/div[1]/div/div/div[2]")
-    WebElement textError;
+    private SelenideElement textError = $(By.xpath("/html/body/div[1]/section/div[1]/div/div/div[2]"));
 
-
-    public CheckPage(WebDriver driver) {
-        this.driver = driver;
-        PageFactory.initElements(driver, this);
-    }
     public boolean getWhereFrom() {
         return whereFrom.isDisplayed();
+
     }
 
     public boolean getWhere() {
@@ -84,7 +77,7 @@ public class CheckPage {
 
         boolean present;
         try {
-            driver.findElement(By.xpath("//*[contains(text(),'" + name + "')]")).isDisplayed();
+            $(By.xpath("//*[contains(text(),'" + name + "')]")).isDisplayed();
             present = true;
         } catch (NoSuchElementException e) {
             present = false;

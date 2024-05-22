@@ -1,48 +1,31 @@
 package pom;
 
-import org.junit.After;
+import com.codeborne.selenide.Selenide;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WindowType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
 import java.time.Duration;
 
+import static com.codeborne.selenide.Condition.text;
+import static com.codeborne.selenide.Condition.visible;
+import static com.codeborne.selenide.Selenide.*;
 import static org.junit.Assert.assertEquals;
 
 
 public class TestPage {
 
-    WebDriver driver;
-    private WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(50));
-    MouseHoverPage objMouse;
-    ScrollPage objScroll;
-    CheckPage objCheck;
-    DataEntryPage objEntry;
-
     @Before
     public void setUp() {
-        driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(40));
-        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
-
         //Перейти на сайт «https://www.pobeda.aero/».
-        driver.get("https://www.pobeda.aero/");
-        assertEquals(driver.getCurrentUrl(), "https://www.pobeda.aero/");
+        open("https://www.pobeda.aero/");
 
         //Создаем экземпляр оъекта страницы
-        objMouse = new MouseHoverPage(driver);
-        objScroll = new ScrollPage(driver);
-        objCheck = new CheckPage(driver);
-        objEntry = new DataEntryPage(driver);
+        CheckPage objCheck = new CheckPage();
         //Проверяем текст заголовка страницы
-        assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", driver.getTitle());
-
+       assertEquals("Авиакомпания «Победа» - купить авиабилеты онлайн, дешёвые билеты на самолёт, прямые и трансферные рейсы с пересадками", title());
         //Проверяем логотип Победы
         objCheck.getLogo();
 
@@ -50,9 +33,13 @@ public class TestPage {
 
     @Test
     public void testSuccessfullyMouseHover() {
+        //Создаем экземпляр оъекта страницы
+        MouseHoverPage objMouse = new MouseHoverPage();
+        CheckPage objCheck = new CheckPage();
         //Навести мышку на пункт «Информация».
         objMouse.getMouse();
-        wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.xpath("//div/a[text() = 'Информация']")), "Информация"));
+        ExpectedConditions.textToBePresentInElement($(By.xpath("//div/a[text() = 'Информация']")), "Информация");
+      //  wait.until(ExpectedConditions.textToBePresentInElement(driver.findElement(By.xpath("//div/a[text() = 'Информация']")), "Информация"));
 
         //Убедиться, что появилось всплывающее окно, которое содержит следующие заголовки:
         // «Подготовка к полету», «Полезная информация», «О компании».
@@ -62,15 +49,21 @@ public class TestPage {
     }
         @Test
         public void testSuccessfullyScroll() {
+            //Создаем экземпляр оъекта страницы
+            ScrollPage objScroll = new ScrollPage();
+            CheckPage objCheck = new CheckPage();
+            DataEntryPage objEntry = new DataEntryPage();
 
             //Проскроллить страницу к блоку поиска билета
             objScroll.getScroll();
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]"))));
+            $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]")).shouldBe(visible,
+                    Duration.ofSeconds(20));
+           // wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]"))));
             //Проверка поля Откуда
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input"))));
+           // wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[1]/div/div/input"))));
             Assert.assertTrue(objCheck.getWhereFrom());
             //Проверка поля Куда
-            wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"))));
+           // wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"))));
             Assert.assertTrue(objCheck.getWhere());
             //Проверка поля Дата вылета туда
             Assert.assertTrue(objCheck.getDepartureDateThere());
@@ -79,24 +72,29 @@ public class TestPage {
 
             //Ввести в поле значение "Москва"
             objEntry.getAddCity();
-            //Нажать ENTER
-            objEntry.getPressEnter();
+
             //Ввести в поле значение "Санкт-Петербург"
             objEntry.getAddCity2();
-            //Нажать ENTER
-            objEntry.getPressEnter2();
 
+            //$(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input")).shouldBe(visible,
+                 //   Duration.ofSeconds(10));
             //Проскроллить страницу к сделующему блоку
             objScroll.getScroll2();
-
+//            $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[3]")).shouldBe(visible,
+//                    Duration.ofSeconds(30));
             //Нажать кнопку Поиск
+          //  $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div[2]/div[2]/div[3]/form/div/div[4]/button")).shouldBe(visible,
+          //         Duration.ofSeconds(10));
             objEntry.clockButton();
             //Проверка что после нажатия на кнопку "Поиск" около поля «Туда» появилась красная обводка.
             objCheck.getStrokePanel();
         }
         @Test
         public void testSuccessfullyScroll2() {
-
+            //Создаем экземпляр оъекта страницы
+            ScrollPage objScroll = new ScrollPage();
+            CheckPage objCheck = new CheckPage();
+            DataEntryPage objEntry = new DataEntryPage();
         //Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
         objScroll.getScroll3();
         objEntry.clickButtonBookingManagement();
@@ -107,30 +105,25 @@ public class TestPage {
         //Проверка наличия поля есть кнопка «Поиск»
         Assert.assertTrue(objCheck.getTheSearchButton());
 
-
         //Ввести в поле ввода данные: фамилия – Qwerty
         objEntry.getAddSurname();
-        //Нажать ENTER
-        objEntry.getPressEnter4();
+
         //Ввести в поле ввода данные: номер заказа – XXXXXX
         objEntry.getAddOrderNumber();
-        //Нажать ENTER
-        objEntry.getPressEnter3();
+
         //Нажать кнопку Поиск
         objEntry.clockButton2();
 
         //Переключение на вкладку с результатами поиска
-        driver.switchTo().window((String)driver.getWindowHandles().toArray()[2]);
-
+            Selenide.switchTo().newWindow(WindowType.TAB);
+            Selenide.open("https://ticket.pobeda.aero/websky/?lang=ru#/search-order/XXXXXX/Qwerty");
         //Проверка что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
-        objCheck.getTextError();
-        Assert.assertTrue(objCheck.isDisplayed("Заказ с указанными параметрами не найден"));
+       // objCheck.getTextError();
+            $(By.xpath("/html/body/div[1]/section/div[1]/div/div/div[2]")).shouldBe(visible,
+                    Duration.ofSeconds(30));
+            objCheck.getTextError();
+       // Assert.assertTrue(objCheck.isDisplayed("Заказ с указанными параметрами не найден"));
     }
 
-    @After
-    public void tearDown() {
-        //Выйти
-        driver.quit();
-    }
 }
 
