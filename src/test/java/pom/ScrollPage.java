@@ -10,7 +10,7 @@ public class ScrollPage {
     private SelenideElement scroll =$(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[1]"));
 
     //Проскроллить страницу к сделующему блоку
-    private SelenideElement scroll2 = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[4]/div/div[1]/div/div[1]"));
+    private SelenideElement scroll2 = $(By.xpath("//*[@id=\\\"__next\\\"]/div[2]/main/div/div/div[1]/div/div[2]/div/div"));
 
     //Проскроллить страницу чуть ниже и кликнуть на пункт «Управление бронированием».
     private SelenideElement scroll3 = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[1]/div/div[2]/div/div"));

@@ -15,7 +15,7 @@ public class DataEntryPage {
     private SelenideElement addCity2 = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[1]/div/div[4]/div[1]/div/input"));
 
     //Нажать кнопку Поиск
-    private SelenideElement pressButton = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div[2]/div[2]/div[3]/form/div/div[4]/button"));
+    private SelenideElement pressButton = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[4]/button"));
 
     //Кликнуть на пункт «Управление бронированием»
     private SelenideElement clickButton = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[1]/div[2]/button[3]"));
@@ -44,12 +44,11 @@ public class DataEntryPage {
     public void clickButtonBookingManagement(){
         clickButton.click();
     }
-    public void getAddOrderNumber() {
-        addOrderNumber.setValue("XXXXXX").pressEnter();
-    }
-
     public void getAddSurname() {
         addSurname.setValue("Qwerty").pressEnter();
+    }
+    public void getAddOrderNumber() {
+        addOrderNumber.setValue("XXXXXX").pressEnter();
     }
 
     public void clockButton2(){

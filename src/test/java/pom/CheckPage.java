@@ -4,6 +4,7 @@ import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 import java.util.NoSuchElementException;
 
+import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 public class CheckPage {
@@ -24,7 +25,7 @@ public class CheckPage {
     private SelenideElement returnFlightDate = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div[1]/div[3]/div/input"));
 
     //Проверка что после нажатия на кнопку "Поиск" около поля «Туда» появилась красная обводка.
-    private SelenideElement strokePanel = $(By.xpath("//*[@id=\\\"__next\\\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[2]/div/div[1]/div"));
+    private SelenideElement strokePanel = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/div[3]/form/div/div[1]/div/div[2]/div[1]/div/div[1]/div"));
 
     //Проверка поля «Номер заказа или билета»
     private SelenideElement orderOrTicketNumber = $(By.xpath("//*[@id=\"__next\"]/div[2]/main/div/div/div[2]/div/div[2]/form/div/div[2]/div/div/input"));
@@ -38,19 +39,19 @@ public class CheckPage {
     //Проверка что в новой вкладке на экране отображается текст ошибки «Заказ с указанными параметрами не найден»
     private SelenideElement textError = $(By.xpath("/html/body/div[1]/section/div[1]/div/div/div[2]"));
 
-    public boolean getWhereFrom() {
-        return whereFrom.isDisplayed();
+    public SelenideElement getWhereFrom() {
+        return whereFrom.shouldBe(visible);
 
     }
 
-    public boolean getWhere() {
-        return where.isDisplayed();
+    public SelenideElement getWhere() {
+        return where.shouldBe(visible);
     }
-    public boolean getDepartureDateThere() {
-        return departureDateThere.isDisplayed();
+    public SelenideElement getDepartureDateThere() {
+        return departureDateThere.shouldBe(visible);
     }
-    public boolean getReturnFlightDate() {
-        return returnFlightDate.isDisplayed();
+    public SelenideElement getReturnFlightDate() {
+        return returnFlightDate.shouldBe(visible);
     }
 
     public boolean getLogo() {
@@ -60,14 +61,14 @@ public class CheckPage {
     public String getStrokePanel() {
         return strokePanel.getCssValue(".dp-1bgth1z-root[data-errored]");
     }
-    public boolean getOrderOrTicketNumber() {
-        return orderOrTicketNumber.isDisplayed();
+    public SelenideElement getOrderOrTicketNumber() {
+        return orderOrTicketNumber.shouldBe(visible);
     }
-    public boolean getClientLastName() {
-        return clientLastName.isDisplayed();
+    public SelenideElement getClientLastName() {
+        return clientLastName.shouldBe(visible);
     }
-    public boolean getTheSearchButton() {
-        return theSearchButton.isDisplayed();
+    public SelenideElement getTheSearchButton() {
+        return theSearchButton.shouldBe(visible);
     }
     public String getTextError() {
         return textError.getText();
